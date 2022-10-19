@@ -7,6 +7,7 @@ const cartSlice = createSlice({
         addItemToCart(state, action) {
             const item = action.payload;
             const existingItem = state.items.find((i) => item.id === i.id);
+            state.totalQuantity++
             if (!existingItem) {
                 state.items.concat({
                     itemId: item.id,
@@ -21,7 +22,18 @@ const cartSlice = createSlice({
                     existingItem.itemTotal + existingItem.itemPrice;
             }
         },
-        removeItemFromCart(state, action) {},
+        removeItemFromCart(state, action) {
+            const id = action.payload;
+            const existingItem = state.items.find((i) => i.id === id);
+            state.totalQuantity--
+            if (existingItem === 1) {
+                state.items = state.items.filter((item) => item.id !== id);
+            } else {
+                existingItem.ItemQuantity--;
+                existingItem.itemtotal =
+                    existingItem.itemTotal - existingItem.price;
+            }
+        },
     },
 });
 
