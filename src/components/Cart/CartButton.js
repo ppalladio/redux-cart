@@ -1,6 +1,7 @@
 import classes from './CartButton.module.css';
 import { uiAction } from '../../store/ui-slice';
 import { useDispatch } from 'react-redux';
+//#to dispatch an action, need the action itself and dispatch function.
 const CartButton = (props) => {
     const dispatch = useDispatch();
     const toggleHandler = () => {

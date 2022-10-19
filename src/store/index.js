@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { uiAction } from './ui-slice';
+//# to generate store component with single reducer,
 import uiSlice from './ui-slice';
 
 
