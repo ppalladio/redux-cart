@@ -1,18 +1,21 @@
-import {createSlice} from '@reduxjs/toolkit'
-
-
-
+import { createSlice } from '@reduxjs/toolkit';
 
 const uiSlice = createSlice({
     name: 'ui',
-    initialState:{cartIsVisible:false},
+    initialState: { cartIsVisible: false, notification: null },
     reducers: {
-        toggle(state){
-            state.cartIsVisible = !state.cartIsVisible
-        }
-    }
-})
-
+        toggle(state) {
+            state.cartIsVisible = !state.cartIsVisible;
+        },
+        showNotification(state, action) {
+            state.notification = {
+                status: action.payload.status,
+                title: action.payload.title,
+                message: action.payload.message,
+            };//'names after payload were customized
+        },
+    },
+});
 
 export const uiAction = uiSlice.actions;
 export default uiSlice;
