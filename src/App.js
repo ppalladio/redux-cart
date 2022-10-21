@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import Cart from './components/Cart/Cart';
 import Layout from './components/Layout/Layout';
 import Products from './components/Shop/Products';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux'; //#to utilize the state stored in each slice
 import { uiActions } from './store/ui-slice';
 import Notification from './components/UI/Notification';
-//#to utilize the state storeed in each slice
+let isInit = true; //. to prevent the useEffect from running at the beginning and sending empty data
 function App() {
     const showCart = useSelector((state) => state.ui.cartIsVisible); //' the state of ui slice, identified by the ui because we can only have one reducer.
     const cart = useSelector((state) => state.cart); //'the lastest cart
@@ -41,6 +41,12 @@ function App() {
                 }),
             );
         };
+
+        if (isInit) {
+            isInit = false;
+            return;
+        }
+
         sendCartData().catch((err) => {
             dispatch(
                 uiActions.showNotification({
@@ -50,7 +56,7 @@ function App() {
                 }),
             );
         });
-    }, [cart]); // 'hence whenever the cart content changers, it the function will be rerendered
+    }, [cart,dispatch]); // 'hence whenever the cart content changers, it the function will be rerendered, [dispatch] will be never change but still considered as a good practice to include it
 
     return (
         <>
