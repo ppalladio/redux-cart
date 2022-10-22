@@ -70,9 +70,7 @@ export const sendCartData = (cart) => {
                     message: 'cart sent',
                 }),
             );
-        } catch (err) {
-            sendCartData().catch((err) => {
-                sendCartData().catch((err) => {
+        } catch (error) {
                     dispatch(
                         uiActions.showNotification({
                             status: 'error',
@@ -80,8 +78,6 @@ export const sendCartData = (cart) => {
                             message: 'could not send cart data',
                         }),
                     );
-                });
-            });
         }
     };
 };

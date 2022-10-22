@@ -3,7 +3,7 @@ import Cart from './components/Cart/Cart';
 import Layout from './components/Layout/Layout';
 import Products from './components/Shop/Products';
 import { useSelector, useDispatch } from 'react-redux'; //#to utilize the state stored in each slice
-import { uiActions,sendCartData } from './store/ui-slice';
+import { sendCartData } from './store/cart-slice';
 
 import Notification from './components/UI/Notification';
 let isInit = true; //. to prevent the useEffect from running at the beginning and sending empty data
