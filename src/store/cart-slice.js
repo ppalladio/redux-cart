@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { uiActions } from './ui-slice';
 const cartSlice = createSlice({
     name: 'cart',
     initialState: { items: [], totalQuantity: 0 },
@@ -37,50 +36,6 @@ const cartSlice = createSlice({
     },
 });
 
-//: [Thunk function], delay the action until later,in this case, an action creator function that does not return the action itself but another function which eventually returns the action
-export const sendCartData = (cart) => {
-    return async (dispatch) => {
-        dispatch(
-            uiActions.showNotification({
-                status: 'pending',
-                title: 'sending',
-                message: 'sending cart cart',
-            }),
-        );
-
-        const sendRequest = async () => {
-            const res = await fetch(
-                'https://react-c749e-default-rtdb.firebaseio.com/cart.json',
-                {
-                    method: 'PUT',
-                    content: JSON.stringify(cart),
-                },
-            );
-
-            if (!res.ok) {
-                throw new Error('Could not send cart data');
-            }
-        };
-        try {
-            await sendRequest();
-            dispatch(
-                uiActions.showNotification({
-                    status: 'success',
-                    title: 'success',
-                    message: 'cart sent',
-                }),
-            );
-        } catch (error) {
-                    dispatch(
-                        uiActions.showNotification({
-                            status: 'error',
-                            title: 'error',
-                            message: 'could not send cart data',
-                        }),
-                    );
-        }
-    };
-};
 
 export const cartActions = cartSlice.actions;
 
