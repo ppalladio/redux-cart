@@ -3,7 +3,8 @@ import Cart from './components/Cart/Cart';
 import Layout from './components/Layout/Layout';
 import Products from './components/Shop/Products';
 import { useSelector, useDispatch } from 'react-redux'; //#to utilize the state stored in each slice
-import { uiActions } from './store/ui-slice';
+import { uiActions,sendCartData } from './store/ui-slice';
+
 import Notification from './components/UI/Notification';
 let isInit = true; //. to prevent the useEffect from running at the beginning and sending empty data
 function App() {
@@ -13,50 +14,17 @@ function App() {
     const notification = useSelector((state) => state.ui.notification);
 
     useEffect(() => {
-        const sendCartData = async () => {
-            dispatch(
-                uiActions.showNotification({
-                    status: 'pending',
-                    title: 'sending',
-                    message: 'sending cart cart',
-                }),
-            );
-            const res = await fetch(
-                'https://react-c749e-default-rtdb.firebaseio.com/cart.json',
-                {
-                    method: 'PUT',
-                    content: JSON.stringify(cart),
-                },
-            );
-
-            if (!res.ok) {
-                throw new Error('Could not send cart data');
-            }
-
-            dispatch(
-                uiActions.showNotification({
-                    status: 'success',
-                    title: 'success',
-                    message: 'cart sent',
-                }),
-            );
-        };
+       
+            
+            
 
         if (isInit) {
             isInit = false;
             return;
         }
-
-        sendCartData().catch((err) => {
-            dispatch(
-                uiActions.showNotification({
-                    status: 'error',
-                    title: 'error',
-                    message: 'could not send cart data',
-                }),
-            );
-        });
-    }, [cart,dispatch]); // 'hence whenever the cart content changers, it the function will be rerendered, [dispatch] will be never change but still considered as a good practice to include it
+dispatch(sendCartData(cart))
+        
+}, [cart,dispatch]); // 'hence whenever the cart content changers, it the function will be rerendered, [dispatch] will be never change but still considered as a good practice to include it
 
     return (
         <>
