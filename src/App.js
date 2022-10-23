@@ -14,7 +14,7 @@ function App() {
     const dispatch = useDispatch();
     const notification = useSelector((state) => state.ui.notification);
     useEffect(() => {
-       dispatch(fetchCartData());
+        dispatch(fetchCartData());
     }, [dispatch]);
 
     useEffect(() => {
@@ -22,7 +22,9 @@ function App() {
             isInit = false;
             return;
         }
-        dispatch(sendCartData(cart));
+        if (cart.changed) {
+            dispatch(sendCartData(cart));
+        }
     }, [cart, dispatch]); // 'hence whenever the cart content changers, it the function will be rerendered, [dispatch] will be never change but still considered as a good practice to include it
 
     return (

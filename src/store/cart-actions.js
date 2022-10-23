@@ -1,6 +1,5 @@
-import { cartActions } from "./cart-slice";
-import { uiActions } from "./ui-slice";
-
+import { cartActions } from './cart-slice';
+import { uiActions } from './ui-slice';
 
 //: [Thunk function], delay the action until later,in this case, an action creator function that does not return the action itself but another function which eventually returns the action
 export const sendCartData = (cart) => {
@@ -18,7 +17,10 @@ export const sendCartData = (cart) => {
                 'https://react-c749e-default-rtdb.firebaseio.com/cart.json',
                 {
                     method: 'PUT',
-                    content: JSON.stringify(cart),
+                    content: JSON.stringify({
+                        items: cart.items,
+                        totalQuantity: cart.totalQuantity,
+                    }),
                 },
             );
 
@@ -36,30 +38,36 @@ export const sendCartData = (cart) => {
                 }),
             );
         } catch (error) {
-                    dispatch(
-                        uiActions.showNotification({
-                            status: 'error',
-                            title: 'error',
-                            message: 'could not send cart data',
-                        }),
-                    );
+            dispatch(
+                uiActions.showNotification({
+                    status: 'error',
+                    title: 'error',
+                    message: 'could not send cart data',
+                }),
+            );
         }
     };
 };
 
-export const fetchCartData = ()=>{
-    return async dispatch => {
-        const fetchData = async ()=>{
-            const res = await fetch('https://react-c749e-default-rtdb.firebaseio.com/cat.json')
+export const fetchCartData = () => {
+    return async (dispatch) => {
+        const fetchData = async () => {
+            const res = await fetch(
+                'https://react-c749e-default-rtdb.firebaseio.com/cat.json',
+            );
 
             if (!res.ok) {
                 throw new Error('Could not get data');
             }
-            const data =  await res.json()
-        }
-        try{
-            const cartData = await fetchData()
-        dispatch(cartActions.replaceCart(cartData))} catch (error){
+            const data = await res.json();
+        };
+        try {
+            const cartData = await fetchData();
+            dispatch(cartActions.replaceCart({
+                items: cartData.items ||[],
+                totalQuantity: cartData.totalQuantity
+            }));
+        } catch (error) {
             dispatch(
                 uiActions.showNotification({
                     status: 'error',
@@ -67,9 +75,6 @@ export const fetchCartData = ()=>{
                     message: 'fetching cart data error',
                 }),
             );
-
         }
-
-        
-    }
-}
+    };
+};
